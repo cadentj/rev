@@ -3,10 +3,8 @@ import numpy as np
 import streamlit as st
 
 import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
 
 from collections import Counter
-from scipy.signal import convolve2d
 
 class Agent:
 
@@ -30,9 +28,6 @@ class Agent:
     def __str__(self) -> str:
         return f'Race: {self.race}, Religion: {self.religion}, Income: {self.income}'
         
-KERNEL = np.array([[1, 1, 1],
-                   [1, 0, 1],
-                   [1, 1, 1]], dtype=np.int8)
 
 class Environment:
 
@@ -81,8 +76,7 @@ class Environment:
                 neighborhood = self.population_grid[rlb:rub, clb:cub]
                 neighborhood_size = np.size(neighborhood)
                 n_empty_houses = len(np.where(neighborhood == -1)[0])
-
-                if neighborhood_size != neighborhood_size + 1:
+                if neighborhood_size != n_empty_houses + 1:
                     # similarity calculations
                     n_similar = self.similarity_ratio(person, neighborhood)
                     similarity_ratio = n_similar / (neighborhood_size - n_empty_houses - 1.)
@@ -197,9 +191,12 @@ class Govern:
         self.budget = budget
         self.revenue = revenue
 
+    def load_environment(self, environment):
+        self.environment = environment
+
     def create_policy(self, cost):
         self.budget -= cost
-        effectiveness = np.log(cost)/np.log(self.budget)
+        
 
 
 
@@ -208,61 +205,71 @@ class Govern:
 
 
 
-pop_size = 400
+pop_size = 2500
 empty_ratio = 0.2
 race_count = 3
 religion_count = 5
 
-env = Environment(pop_size,empty_ratio, race_count, religion_count)
+sim1 = Govern(100, "democracy", 1000, 1000)
 
-def get_data(population_grid):
-    x = []
-    y = []
-    race_data = []
-    for i in range(len(population_grid)):
-        for j in range(len(population_grid[i])):
-            x.append(i)
-            y.append(j)
-            if population_grid[i][j] == -1:
-                race_data.append(-1)
-            else:
-                race_data.append(population_grid[i][j].race)
+env1 = Environment(pop_size,empty_ratio, race_count, religion_count)
+sim1.load_environment(env1)
+
+
+
+
+
+# ----- Visualization -----
+
+
+# def get_data(population_grid):
+#     x = []
+#     y = []
+#     race_data = []
+#     for i in range(len(population_grid)):
+#         for j in range(len(population_grid[i])):
+#             x.append(i)
+#             y.append(j)
+#             if population_grid[i][j] == -1:
+#                 race_data.append(-1)
+#             else:
+#                 race_data.append(population_grid[i][j].race)
     
-    race_data = np.array(race_data)
-    col = np.where(race_data == -1, 'w', np.where(race_data<1, 'b','r'))
+#     race_data = np.array(race_data)
+#     col = np.where(race_data == -1, 'w', np.where(race_data<1, 'b','r'))
 
-    return x,y,col
+#     return x,y,col
 
-initial_x, initial_y, initial_col = get_data(env.population_grid)
+# initial_x, initial_y, initial_col = get_data(env.population_grid)
 
-plt.figure(figsize=(4,4))
+# plt.figure(figsize=(4,4))
 
-# plt.subplot(121)
-plt.axis('off')
-plt.scatter(initial_x,initial_y,c=initial_col,marker='s',linewidth=0, s=100)
+# # plt.subplot(121)
+# plt.axis('off')
+# plt.scatter(initial_x,initial_y,c=initial_col,marker='s',linewidth=0, s=100)
 
-st.title("Schelling's Model of Segregation")
+# st.title("Schelling's Model of Segregation")
 
-populatio_plot = st.pyplot(plt)
+# populatio_plot = st.pyplot(plt)
 
-progress_bar = st.progress(0)
+# progress_bar = st.progress(0)
 
-n_iterations = st.sidebar.number_input("Number of iterations", 10)
+# n_iterations = st.sidebar.number_input("Number of iterations", 10)
 
-if st.sidebar.button('Run Simulation'):
+# if st.sidebar.button('Run Simulation'):
 
-    for i in range(n_iterations):
-        env.scheilling()
+#     for i in range(n_iterations):
+#         env.scheilling()
 
-        new_x, new_y, new_col = get_data(env.population_grid)
+#         new_x, new_y, new_col = get_data(env.population_grid)
 
-        plt.figure(figsize=(4,4))
-        plt.axis('off')
-        plt.scatter(new_x,new_y,c=new_col,marker='s',linewidth=0, s=100)
+#         plt.figure(figsize=(4,4))
+#         plt.axis('off')
+#         plt.scatter(new_x,new_y,c=new_col,marker='s',linewidth=0, s=100)
 
-        populatio_plot.pyplot(plt)
-        plt.close('all')
+#         populatio_plot.pyplot(plt)
+#         plt.close('all')
 
-        progress_bar.progress((i+1.)/n_iterations)
+#         progress_bar.progress((i+1.)/n_iterations)
 
         
