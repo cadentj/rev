@@ -235,11 +235,11 @@ def get_data(population_grid):
 
 initial_x, initial_y, initial_col = get_data(env.population_grid)
 
-# plt.figure(figsize=(4,4))
+plt.figure(figsize=(4,4))
 
 # plt.subplot(121)
 plt.axis('off')
-plt.scatter(initial_x,initial_y,c=initial_col,marker='s',linewidth=0)
+plt.scatter(initial_x,initial_y,c=initial_col,marker='s',linewidth=0, s=100)
 
 st.title("Schelling's Model of Segregation")
 
@@ -255,9 +255,10 @@ if st.sidebar.button('Run Simulation'):
         env.scheilling()
 
         new_x, new_y, new_col = get_data(env.population_grid)
-        
+
+        plt.figure(figsize=(4,4))
         plt.axis('off')
-        plt.scatter(new_x,new_y,c=new_col,marker='s',linewidth=0)
+        plt.scatter(new_x,new_y,c=new_col,marker='s',linewidth=0, s=100)
 
         populatio_plot.pyplot(plt)
         plt.close('all')
