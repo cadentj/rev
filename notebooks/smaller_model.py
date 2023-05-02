@@ -224,26 +224,26 @@ env = Environment(pop_size,empty_ratio, race_count, religion_count)
 
 g1, g2 = env.scheilling()
 
-def get_data(population_grid):
 
+def get_data(population_grid):
+    counter = 0
     x = []
     y = []
     race_data = []
     for i in range(len(population_grid)):
-        for j in range(i):
+        for j in range(len(population_grid[i])):
+            counter += 1
             x.append(i)
             y.append(j)
             if population_grid[i][j] == -1:
                 race_data.append(-1)
             else:
                 race_data.append(population_grid[i][j].race)
-
+    print(counter)
     return x,y,race_data
 
 x,y,race_data = get_data(g1)
 x2,y2,race_data2 = get_data(g2)
-
-
 
 race_data = np.array(race_data)
 col = np.where(race_data == -1, 'w', np.where(race_data<1, 'b','r'))
@@ -251,16 +251,16 @@ col = np.where(race_data == -1, 'w', np.where(race_data<1, 'b','r'))
 race_data2 = np.array(race_data2)
 col2 = np.where(race_data2 == -1, 'w', np.where(race_data2<1, 'b','r'))
 
+
+
 plt.figure(figsize=(8,4))
 
 plt.subplot(121)
-plt.axis('off')
 plt.scatter(x,y,c=col,marker='s',linewidth=0)
 
 
 
 plt.subplot(122)
-plt.axis('off')
 plt.scatter(x2,y2,c=col2,marker='s',linewidth=0)
 
 plt.show()
