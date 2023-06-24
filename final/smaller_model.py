@@ -230,7 +230,6 @@ class Govern:
         current_religion_capital = self.environment.religion_capital
 
         base_success = cost / self.budget
-        print(base_success)
         change = np.random.choice([-0.05, 0.05], size=1, p=[1-base_success, base_success])
 
         if change > 0:
@@ -293,7 +292,6 @@ religion_capital = [env1.religion_capital]
 
 race_labels = [i for i in range(race_count)]
 religion_labels = [i for i in range(religion_count)]
-
 
 initial_x, initial_y, initial_col = get_data(env1.population_grid)
 
@@ -370,47 +368,46 @@ if st.sidebar.button('Run Simulation'):
 
         new_x, new_y, new_col = get_data(env1.population_grid)
 
-        plt.figure(figsize=(16,8))
+        plt.figure(figsize=(24,8))
 
-        plt.subplot(121)
+        plt.subplot(131)
         plt.axis('off')
         plt.scatter(new_x,new_y,c=new_col,marker='s',linewidth=0, s=100)
         plt.title("Scheilling Model")
 
-        plt.subplot(243)
+        plt.subplot(263)
         plt.plot(np.arange(len(sentiment)), np.array(sentiment), color='r')
         plt.xlim(0,n_iterations)
         plt.ylim(0,100)
         plt.title("Stability")
 
-
-        plt.subplot(244)
+        plt.subplot(264)
         plt.plot(np.arange(len(budget)), np.array(budget), color='r')
         plt.xlim(0,n_iterations)
         plt.ylim(0,1000000)
         plt.title("Budget")
 
-        plt.subplot(247)
+        plt.subplot(265)
         plt.bar(race_labels, race_income[-1], color='r')
         plt.title("Income by Race")
 
-        plt.subplot(248)
+        plt.subplot(266)
         plt.bar(religion_labels, religion_income[-1], color='r')
         plt.title("Income by Religion")
 
-        plt.subplot(247)
+        plt.subplot(2,6,9)
         plt.bar(race_labels, race_policy[-1], color='r')
         plt.title("Policy by Race")
 
-        plt.subplot(248)
+        plt.subplot(2,6,10)
         plt.bar(religion_labels, religion_policy[-1], color='r')
         plt.title("Policy by Religion")
 
-        plt.subplot(247)
+        plt.subplot(2,6,11)
         plt.bar(race_labels, race_capital[-1], color='r')
         plt.title("Capital by Race")
 
-        plt.subplot(248)
+        plt.subplot(2,6,12)
         plt.bar(religion_labels, religion_capital[-1], color='r')
         plt.title("Capital by Religion")
 
